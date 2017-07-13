@@ -9,15 +9,27 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {timer: 25};
+    this.state = {
+      minutes: 0,
+      totalSeconds: 0,
+      timer: { }
+    };
   }
-  //Update the timer - function called from SessionLength component
-  updateTimer = (increment) => {
-    if (increment) {
-      this.setState({ timer: this.state.timer +1});
-    } else {
-      this.setState({ timer: this.state.timer -1});
-    }
+
+  //Add or remove minutes the timer - function called from SessionLength component
+  updateTimer = (minutes, totalSeconds) => {
+    this.setState({ minutes: minutes, totalSeconds: totalSeconds});
+  }
+
+  //Convert timer to hours, minutes, seconds and store in state timer
+  convertTimer = () => { 
+    const seconds = this.state.totalSeconds;
+    let hours = Math.floor(seconds / (60 * 60));
+    let divisorMinutes  = seconds % (60 * 60);
+    let minutes = Math.floor(divisorMinutes / 60);
+    let divisorSeconds = divisorMinutes % 60;
+    let convertSeconds = Math.ceil(divisorSeconds);
+    this.setState({ timer: {h:hours, m:minutes, s:convertSeconds} });
   }
 
   render() {
@@ -27,11 +39,10 @@ class App extends Component {
           <h2>Pomodora Clock</h2>
         </div>
         <section className="App-intro">
-          <SessionClock timer={this.state.timer}/>
-          <SessionLength callbackFromApp={this.updateTimer} timer={this.state.timer}/>
+          <SessionClock minutes={this.state.minutes} totalSeconds={this.state.totalSeconds} callbackFromApp={this.convertTimer}/>
+          <SessionLength callbackFromApp={this.updateTimer} />
         </section>
         <footer>
-          Built with <img src={logo} className="App-logo" alt="logo" />
         </footer>
       </div>
     );

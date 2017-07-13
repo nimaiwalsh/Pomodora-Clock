@@ -1,10 +1,11 @@
 import React from 'react';
 
-const SessionClock = (props) => {
+const SessionClock = ({ minutes, totalSeconds, callbackFromApp }) => {
 
     return (
         <div>
-            <div className="session-clock">SESSION CLOCK: {props.timer}</div>
+            <div className="session-clock">SESSION CLOCK: {minutes} {totalSeconds}</div>
+            <button className="start-timer" onClick={callbackFromApp}>START TIMER</button>
         </div>
     );
 } 
