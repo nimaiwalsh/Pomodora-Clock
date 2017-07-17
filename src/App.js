@@ -12,17 +12,19 @@ class App extends Component {
     this.state = {
       minutes: 0,
       totalSeconds: 0,
-      timer: { }
+      timer: { },
+      intervalId: 0
     };
   }
 
   //Add or remove minutes the timer - function called from SessionLength component
-  updateTimer = (minutes, totalSeconds) => {
-    this.setState({ minutes: minutes, totalSeconds: totalSeconds});
+  updateTimer = (minutes) => {
+    this.setState({ minutes: minutes, totalSeconds: minutes * 60});
   }
 
-  //Convert timer to hours, minutes, seconds and store in state timer
-  convertTimer = () => { 
+  //Convert timer to hours, minutes, seconds and udate timer state
+  convertTimer = () => {
+    this.setState({totalSeconds: this.state.totalSeconds -1}); 
     const seconds = this.state.totalSeconds;
     let hours = Math.floor(seconds / (60 * 60));
     let divisorMinutes  = seconds % (60 * 60);
@@ -30,6 +32,25 @@ class App extends Component {
     let divisorSeconds = divisorMinutes % 60;
     let convertSeconds = Math.ceil(divisorSeconds);
     this.setState({ timer: {h:hours, m:minutes, s:convertSeconds} });
+    if (this.state.totalSeconds <= 0) {
+      this.clearTimer();
+    }
+  }
+
+  //convertTimer every second
+  beginTimer = () => {
+    if (!this.state.intervalId) {
+      const intervalId = setInterval(() => {this.convertTimer()}, 1000);
+      this.setState({intervalId});
+    } else {
+      this.clearTimer();
+    }
+  }
+
+  //Stops the timer updating every second
+  clearTimer = () => {
+      clearInterval(this.state.intervalId)
+      this.setState({ intervalId: '' })
   }
 
   render() {
@@ -39,8 +60,8 @@ class App extends Component {
           <h2>Pomodora Clock</h2>
         </div>
         <section className="App-intro">
-          <SessionClock minutes={this.state.minutes} totalSeconds={this.state.totalSeconds} callbackFromApp={this.convertTimer}/>
-          <SessionLength callbackFromApp={this.updateTimer} />
+          <SessionClock minutes={this.state.minutes} timer={this.state.timer} callbackFromApp={this.beginTimer}/>
+          <SessionLength callbackFromApp={this.updateTimer} minutes={this.state.minutes}/>
         </section>
         <footer>
         </footer>
