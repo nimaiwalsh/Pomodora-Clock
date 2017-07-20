@@ -8,21 +8,26 @@ class App extends Component {
   //Set initial state
   constructor(props) {
     super(props);
-
+    //Set the initial state 25 minute start time
     this.state = {
-      minutes: 0,
-      totalSeconds: 0,
-      timer: { },
-      intervalId: 0
+      totalSeconds: 1500,
+      timer: {h:0, m:25, s:'00'},
+      setMinutes: 25,
+      intervalId: 0,
+      timerBtn: 'Start',
     };
   }
 
-  //Add or remove minutes the timer - function called from SessionLength component
+  //Add or remove minutes to the timer - function called from SessionLength component
   updateTimer = (minutes) => {
-    this.setState({ minutes: minutes, totalSeconds: minutes * 60});
+    this.setState({ 
+      setMinutes: minutes, 
+      totalSeconds: minutes * 60, 
+      timer: {m:minutes, s:'00'} 
+    });
   }
 
-  //Convert timer to hours, minutes, seconds and udate timer state
+  //Reduce timer by 1 second every second and convert timer to hours:minutes:seconds and update timer state -- timer conversions sourced online
   convertTimer = () => {
     this.setState({totalSeconds: this.state.totalSeconds -1}); 
     const seconds = this.state.totalSeconds;
@@ -37,13 +42,17 @@ class App extends Component {
     }
   }
 
-  //convertTimer every second
+  //convertTimer every second, update the start-stop button 
   beginTimer = () => {
     if (!this.state.intervalId) {
       const intervalId = setInterval(() => {this.convertTimer()}, 1000);
-      this.setState({intervalId});
+      this.setState({
+        intervalId, 
+        timerBtn: 'Stop'
+      });
     } else {
       this.clearTimer();
+      this.setState({timerBtn: 'Start'});
     }
   }
 
@@ -54,14 +63,25 @@ class App extends Component {
   }
 
   render() {
+    //Determine if hours are used and pass to SessionClock
+    const timerHours = this.state.timer.h;
+    const timerMinutes = this.state.timer.m;
+    const timerSeconds = this.state.timer.s;
+    let sessionClock = '';
+    if (!timerHours) {
+      sessionClock = `${timerMinutes}:${timerSeconds}`;
+    } else {
+      sessionClock = `${timerHours}:${timerMinutes}:${timerSeconds}`;
+    }
+
     return (
       <div className="App">
         <div className="App-header">
           <h2>Pomodora Clock</h2>
         </div>
         <section className="App-intro">
-          <SessionClock minutes={this.state.minutes} timer={this.state.timer} callbackFromApp={this.beginTimer}/>
-          <SessionLength callbackFromApp={this.updateTimer} minutes={this.state.minutes}/>
+          <SessionClock callbackFromApp={this.beginTimer} sessionClock={sessionClock} timerBtn={this.state.timerBtn} />
+          <SessionLength callbackFromApp={this.updateTimer} minutes={this.state.setMinutes} />
         </section>
         <footer>
         </footer>
