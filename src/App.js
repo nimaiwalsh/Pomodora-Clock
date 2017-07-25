@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SessionClock from './components/SessionClock.js';
 import SessionLength from './components/SessionLength.js';
+import SessionProgressBar from './components/SessionProgressBar.js';
 import logo from './logo.svg';
 import './App.css';
 
@@ -14,7 +15,7 @@ class App extends Component {
       timer: {h:0, m:25, s:'00'},
       setMinutes: 25,
       intervalId: 0,
-      timerBtn: 'Start',
+      timerBtn: 'Start'
     };
   }
 
@@ -62,17 +63,28 @@ class App extends Component {
       this.setState({ intervalId: '' })
   }
 
+  //Reset timer and state
+  resetTimer = () => {
+    this.setState({
+      totalSeconds: 1500,
+      timer: {h:0, m:25, s:'00'},
+      setMinutes: 25,
+      intervalId: 0,
+      timerBtn: 'Start'
+    })
+    this.clearTimer();
+  }
+
   render() {
     //Determine if hours are used and pass to SessionClock
-    const timerHours = this.state.timer.h;
-    const timerMinutes = this.state.timer.m;
-    const timerSeconds = this.state.timer.s;
     let sessionClock = '';
-    if (!timerHours) {
-      sessionClock = `${timerMinutes}:${timerSeconds}`;
+    if (!this.state.timer.h) {
+      sessionClock = `${this.state.timer.m}:${this.state.timer.s}`;
     } else {
-      sessionClock = `${timerHours}:${timerMinutes}:${timerSeconds}`;
+      sessionClock = `${this.state.timer.h}:${this.state.timer.m}:${this.state.timer.s}`;
     }
+    //Convert time left to a percentage and pass as prop to SessionProgressBar
+    let percentage = (this.state.totalSeconds / (this.state.setMinutes * 60)) * 100;
 
     return (
       <div className="App">
@@ -80,8 +92,9 @@ class App extends Component {
           <h2>Pomodora Clock</h2>
         </div>
         <section className="App-intro">
-          <SessionClock callbackFromApp={this.beginTimer} sessionClock={sessionClock} timerBtn={this.state.timerBtn} />
+          <SessionClock callbackFromApp={this.beginTimer} callbackFromApp2={this.resetTimer} sessionClock={sessionClock} timerBtn={this.state.timerBtn} />
           <SessionLength callbackFromApp={this.updateTimer} minutes={this.state.setMinutes} />
+          <SessionProgressBar percentage={percentage} />
         </section>
         <footer>
         </footer>
