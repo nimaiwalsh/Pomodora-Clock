@@ -28,7 +28,7 @@ class App extends Component {
     });
   }
 
-  //Reduce timer by 1 second every second and convert timer to hours:minutes:seconds and update timer state -- timer conversions sourced online
+  //Reduce timer by 1 second every second and convert timer to hours:minutes:seconds and update timer state
   convertTimer = () => {
     this.setState({totalSeconds: this.state.totalSeconds -1}); 
     const seconds = this.state.totalSeconds;
@@ -76,13 +76,6 @@ class App extends Component {
   }
 
   render() {
-    //Determine if hours are used and pass to SessionClock
-    let sessionClock = '';
-    if (!this.state.timer.h) {
-      sessionClock = `${this.state.timer.m}:${this.state.timer.s}`;
-    } else {
-      sessionClock = `${this.state.timer.h}:${this.state.timer.m}:${this.state.timer.s}`;
-    }
     //Convert time left to a percentage and pass as prop to SessionProgressBar
     let percentage = (this.state.totalSeconds / (this.state.setMinutes * 60)) * 100;
 
@@ -91,8 +84,8 @@ class App extends Component {
         <div className="App-header">
           <h2>Pomodora Clock</h2>
         </div>
-        <section className="App-intro">
-          <SessionClock callbackFromApp={this.beginTimer} callbackFromApp2={this.resetTimer} sessionClock={sessionClock} timerBtn={this.state.timerBtn} />
+        <section className="App-section">
+          <SessionClock callbackFromApp={this.beginTimer} callbackFromApp2={this.resetTimer} sessionClock={this.state.timer} timerBtn={this.state.timerBtn} />
           <SessionLength callbackFromApp={this.updateTimer} minutes={this.state.setMinutes} />
           <SessionProgressBar percentage={percentage} />
         </section>
