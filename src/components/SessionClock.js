@@ -11,13 +11,19 @@ const SessionClock = ({ sessionClock, callbackFromApp, callbackFromApp2, timerBt
       <div>
         <div className="session-clock">
           <div className="hour-record" style={{display: `${display}`}}>
-            <span>{sessionClock.h}</span>
+          <div style={{display: `${display}`}}>
+            <span>{sessionClock.h}<span>hours</span></span>
+          </div>  
           </div>
-          <div className="minute-record">
-            <span>{sessionClock.m}<span>minutes</span></span>
+          <div>
+            <div>
+              <span>{sessionClock.m}<span>minutes</span></span>
+            </div>
           </div>
-          <div className="second-record">
-            <span>{sessionClock.s}<span>seconds</span></span>
+          <div>
+            <div>
+              <span>{sessionClock.s}<span>seconds</span></span>
+            </div>
           </div>
         </div>
         <div className="start-reset-btns">

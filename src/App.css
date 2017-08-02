@@ -45,13 +45,23 @@
   align-items: center;
 }
 
-.session-clock > div > span {
+.session-clock > div > div {
+  width: 90px;
+  height: 90px;
+  background-color: #25292C;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.session-clock > div > div > span {
   display: block;
   font-size: 3rem;
   color: white;
 }
 
-.session-clock > div > span > span {
+.session-clock > div > div > span > span {
   font-size: 1rem;
   line-height: 0;
   display: block;

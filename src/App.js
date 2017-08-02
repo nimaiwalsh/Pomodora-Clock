@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import SessionClock from './components/SessionClock.js';
 import SessionLength from './components/SessionLength.js';
 import SessionProgressBar from './components/SessionProgressBar.js';
+import BreakLength from './components/BreakLength.js';
 import logo from './logo.svg';
 import './App.css';
 
@@ -12,8 +13,9 @@ class App extends Component {
     //Set the initial state 25 minute start time
     this.state = {
       totalSeconds: 1500,
-      timer: {h:0, m:25, s:'00'},
+      timer: {h:0, m:25, s:0},
       setMinutes: 25,
+      setBreak: 5,
       intervalId: 0,
       timerBtn: 'Start'
     };
@@ -24,7 +26,7 @@ class App extends Component {
     this.setState({ 
       setMinutes: minutes, 
       totalSeconds: minutes * 60, 
-      timer: {m:minutes, s:'00'} 
+      timer: {m:minutes, s:0} 
     });
   }
 
@@ -38,7 +40,7 @@ class App extends Component {
     let divisorSeconds = divisorMinutes % 60;
     let convertSeconds = Math.ceil(divisorSeconds);
     this.setState({ timer: {h:hours, m:minutes, s:convertSeconds} });
-    if (this.state.totalSeconds <= 0) {
+    if (this.state.totalSeconds === 0) {
       this.clearTimer();
     }
   }
@@ -85,9 +87,22 @@ class App extends Component {
           <h2>Pomodora Clock</h2>
         </div>
         <section className="App-section">
-          <SessionClock callbackFromApp={this.beginTimer} callbackFromApp2={this.resetTimer} sessionClock={this.state.timer} timerBtn={this.state.timerBtn} />
-          <SessionLength callbackFromApp={this.updateTimer} minutes={this.state.setMinutes} />
-          <SessionProgressBar percentage={percentage} />
+          <SessionClock 
+            callbackFromApp={this.beginTimer} 
+            callbackFromApp2={this.resetTimer} 
+            sessionClock={this.state.timer} 
+            timerBtn={this.state.timerBtn} 
+          />
+          <SessionLength 
+            callbackFromApp={this.updateTimer} 
+            minutes={this.state.setMinutes} 
+          />
+          <BreakLength 
+            callbackFromApp={(updateBreak) => {this.setState({setBreak: updateBreak})}} breakTime={this.state.setBreak} 
+          />
+          <SessionProgressBar 
+            percentage={percentage} 
+          />
         </section>
         <footer>
         </footer>
