@@ -17,7 +17,8 @@ class App extends Component {
       setMinutes: 25,
       setBreak: 5,
       intervalId: 0,
-      timerBtn: 'Start'
+      timerBtn: 'Start',
+      worktime: true
     };
   }
 
@@ -40,18 +41,34 @@ class App extends Component {
     let divisorSeconds = divisorMinutes % 60;
     let convertSeconds = Math.ceil(divisorSeconds);
     this.setState({ timer: {h:hours, m:minutes, s:convertSeconds} });
+    //When time is up, start the break countdown.
     if (this.state.totalSeconds === 0) {
-      this.clearTimer();
+      this.swapWorkBreak();
     }
   }
 
-  //convertTimer every second, update the start-stop button 
+  //Swap between set worktime and the break
+  swapWorkBreak = () => {
+    if (this.state.worktime === true) {
+      this.setState({
+        totalSeconds: this.state.setBreak * 60,
+        worktime: false
+      }); 
+    } else {
+      this.setState({
+        totalSeconds: this.state.setMinutes * 60,
+        worktime: true
+      }); 
+    }
+  }
+
+  //Run convertTimer() every second, update the start-pause button 
   beginTimer = () => {
     if (!this.state.intervalId) {
       const intervalId = setInterval(() => {this.convertTimer()}, 1000);
       this.setState({
         intervalId, 
-        timerBtn: 'Stop'
+        timerBtn: 'Pause'
       });
     } else {
       this.clearTimer();
@@ -71,15 +88,22 @@ class App extends Component {
       totalSeconds: 1500,
       timer: {h:0, m:25, s:'00'},
       setMinutes: 25,
+      setBreak: 5,
       intervalId: 0,
-      timerBtn: 'Start'
+      timerBtn: 'Start',
+      worktime: true
     })
     this.clearTimer();
   }
 
   render() {
     //Convert time left to a percentage and pass as prop to SessionProgressBar
-    let percentage = (this.state.totalSeconds / (this.state.setMinutes * 60)) * 100;
+    let percentage = 100;
+    if (this.state.worktime === true) {
+      percentage = (this.state.totalSeconds / (this.state.setMinutes * 60)) * 100;
+    } else {
+      percentage = (this.state.totalSeconds / (this.state.setBreak * 60)) * 100;
+    }
 
     return (
       <div className="App">

@@ -2,7 +2,7 @@ import React from 'react';
 
 const SessionClock = ({ sessionClock, callbackFromApp, callbackFromApp2, timerBtn }) => {
   //If hours present display the hours span
-  let display = 'inline-block';
+  let display = 'flex';
   if (!sessionClock.h) {
     display = 'none';
   }
