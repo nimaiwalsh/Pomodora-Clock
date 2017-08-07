@@ -12,9 +12,9 @@ const SessionLength = ({ callbackFromApp, minutes }) => {
   };
   return (
     <div className="session-length">
-      <button className="minutes-add-btn" onClick={addOne}>+</button>
-      <p>{minutes}</p>
       <button id="minutes-minus-btn" onClick={removeOne}>-</button>
+      <p>{minutes} minutes</p>
+      <button className="minutes-add-btn" onClick={addOne}>+</button>
     </div>
   );
 };

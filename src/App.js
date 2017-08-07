@@ -18,7 +18,7 @@ class App extends Component {
       setBreak: 5,
       intervalId: 0,
       timerBtn: 'Start',
-      worktime: true
+      worktime: true,
     };
   }
 
@@ -97,38 +97,58 @@ class App extends Component {
   }
 
   render() {
-    //Convert time left to a percentage and pass as prop to SessionProgressBar
+    //1. Convert time left to a percentage and pass as prop to SessionProgressBar
+    //2. Update the App-status mesage
     let percentage = 100;
+    let appStatusHead = '';
+    let appStatusMessage = '';
     if (this.state.worktime === true) {
       percentage = (this.state.totalSeconds / (this.state.setMinutes * 60)) * 100;
+      appStatusHead = 'Session time';
+      appStatusMessage = 'Stay motivated and stick to it';
     } else {
       percentage = (this.state.totalSeconds / (this.state.setBreak * 60)) * 100;
+      appStatusHead = 'Break time';
+      appStatusMessage = 'Relax and get yourself a drink';
     }
 
     return (
       <div className="App">
         <div className="App-header">
-          <h2>Pomodora Clock</h2>
+          <h2><span>Pomodora</span>Clock</h2>
         </div>
         <section className="App-section">
+          <div className="App-status">
+            <h3>{appStatusHead}</h3>
+            <p>{appStatusMessage}</p>
+          </div>
           <SessionClock 
             callbackFromApp={this.beginTimer} 
             callbackFromApp2={this.resetTimer} 
             sessionClock={this.state.timer} 
             timerBtn={this.state.timerBtn} 
           />
-          <SessionLength 
-            callbackFromApp={this.updateTimer} 
-            minutes={this.state.setMinutes} 
-          />
-          <BreakLength 
-            callbackFromApp={(updateBreak) => {this.setState({setBreak: updateBreak})}} breakTime={this.state.setBreak} 
-          />
+          <div className="App-controls">
+            <div>
+              <h3>Session length</h3>
+              <SessionLength 
+                callbackFromApp={this.updateTimer} 
+                minutes={this.state.setMinutes} 
+              />
+            </div>
+            <div>
+              <h3>Break length</h3>
+              <BreakLength 
+                callbackFromApp={(updateBreak) => {this.setState({setBreak: updateBreak})}} breakTime={this.state.setBreak} 
+              />
+            </div>
+          </div>
           <SessionProgressBar 
             percentage={percentage} 
           />
         </section>
         <footer>
+
         </footer>
       </div>
     );

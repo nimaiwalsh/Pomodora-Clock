@@ -11,29 +11,42 @@
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.App h3 {
+  text-transform: uppercase;
 }
 
-.App-header > h2{
+.App-header > h2 {
   font-size: 3rem;
+  text-transform: uppercase;
 }
 
-.App-intro {
-  font-size: large;
+.App-header > h2 > span {
+  font-weight: 100;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.App-controls {
+  display: inline-flex;
+  justify-content: center;
+  width: 100%;
+  margin: 20px 0;
 }
 
+.App-controls > div {
+  display: relative;
+  width: 40%;
+}
+.App-controls > :first-child {
+  border-right: solid 4px hotpink;
+}
 /*
 * ==== SessionClock component ====
 */
 .session-clock {
   display: inline-flex;
+}
+
+.session-clock > div {
+  margin: 0 5px;
 }
 .session-clock > div {
   width: 100px;
@@ -70,14 +83,6 @@
 /*
 * ==== SessionLength component ====
 */
-.session-length {
-  margin-bottom: 10px;
-  position: relative;
-}
-
-.session-length > p {
-  display: inline-block;
-}
 
 /*
 * ==== SessionProgressBar component ====

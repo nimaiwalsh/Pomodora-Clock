@@ -4,6 +4,7 @@ const BreakLength = ({ callbackFromApp, breakTime }) => {
 
   return (
     <div className="break-length">
+      <div>{breakTime} minutes</div>
       <input 
         type="range" 
         min="0" 
@@ -12,7 +13,6 @@ const BreakLength = ({ callbackFromApp, breakTime }) => {
         value={breakTime}
         onChange={(event) => callbackFromApp(event.target.value)}
       />
-      <div>{breakTime}</div>
     </div>
   );
 };
