@@ -4,7 +4,7 @@ const BreakLength = ({ callbackFromApp, breakTime }) => {
 
   return (
     <div className="break-length">
-      <div>{breakTime} minutes</div>
+      <div>{breakTime} min</div>
       <input 
         type="range" 
         min="0" 
