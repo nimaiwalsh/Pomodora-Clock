@@ -99,17 +99,21 @@ class App extends Component {
   render() {
     //1. Convert time left to a percentage and pass as prop to SessionProgressBar
     //2. Update the App-status mesage
+    //3. Change textShadow color for AppStatus
     let percentage = 100;
     let appStatusHead = '';
     let appStatusMessage = '';
+    let textShadowColor = '#0192d3';
     if (this.state.worktime === true) {
       percentage = (this.state.totalSeconds / (this.state.setMinutes * 60)) * 100;
       appStatusHead = 'Session time';
       appStatusMessage = 'Stay motivated and stick to it';
+      textShadowColor = '#0192d3';
     } else {
       percentage = (this.state.totalSeconds / (this.state.setBreak * 60)) * 100;
       appStatusHead = 'Break time';
       appStatusMessage = 'Relax and get yourself a drink';
+      textShadowColor = '#FF5B04';
     }
 
     return (
@@ -119,7 +123,7 @@ class App extends Component {
         </div>
         <section className="App-section">
           <div className="App-status">
-            <h3>{appStatusHead}</h3>
+            <h3 style={{ textShadow: `0px 5px 10px ${textShadowColor}` }}>{appStatusHead}</h3>
             <p>{appStatusMessage}</p>
           </div>
           <SessionClock 
@@ -139,12 +143,14 @@ class App extends Component {
             <div>
               <h3>Break length</h3>
               <BreakLength 
-                callbackFromApp={(updateBreak) => {this.setState({setBreak: updateBreak})}} breakTime={this.state.setBreak} 
+                callbackFromApp={(updateBreak) => {this.setState({setBreak: updateBreak})}}
+                breakTime={this.state.setBreak} 
               />
             </div>
           </div>
           <SessionProgressBar 
-            percentage={percentage} 
+            percentage={percentage}
+            worktime={this.state.worktime} 
           />
         </section>
         <footer>
