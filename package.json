@@ -1,6 +1,11 @@
 {
   "name": "pomodora-clock",
   "version": "0.1.0",
+  "author": {
+    "name": "Nimai Walsh",
+    "email": "nimai@nimaiwalsh.com",
+    "url": "https://www.nimaiwalsh.com"
+  },
   "private": true,
   "homepage": "https://nimaiwalsh.github.io/Pomodora-Clock",
   "dependencies": {
